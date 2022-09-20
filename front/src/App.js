@@ -14,17 +14,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <div>
-        <Link to="/">Home</Link>
-        <br />
-        <Link to="/luggage">Luggage</Link>
-        <br />
-        <Link to="/balance">Balance</Link>
-        <br />
-        <Link to="/camera">Camera</Link>
-        <br />
-        <Link to="/Result">Result</Link>
-        <br />
-
         <Routes>
           <Route index element={<Home />} />
           <Route path="luggage" element={<Luggage />} />
