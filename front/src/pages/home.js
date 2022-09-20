@@ -1,9 +1,12 @@
 import React from "react";
 
-export const Home = () => {
+
+const Home = () => {
   return (
     <div>
       これはHome
     </div>
   );
 }
+
+export default Home;

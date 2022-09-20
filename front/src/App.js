@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
 import './App.css';
-import { Home } from "./pages/home";
-import { Luggage } from './pages/luggage';
-import { Balance } from './pages/balance';
-import { Camera } from "./pages/camera";
-import { Result } from './pages/result';
+import Home from "./pages/home";
+import Luggage from './pages/luggage';
+import Balance from './pages/balance';
+import Camera from "./pages/camera";
+import Result from './pages/result';
 
 
 const App = () => {

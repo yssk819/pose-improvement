@@ -1,9 +1,12 @@
 import React from "react";
 
-export const Result = () => {
+
+const Result = () => {
   return (
     <div>
       これはResult
     </div>
   );
 }
+
+export default Result;

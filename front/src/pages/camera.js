@@ -1,9 +1,12 @@
 import React from "react";
 
-export const Camera = () => {
+
+const Camera = () => {
   return (
     <div>
       これはCamera
     </div>
   );
 }
+
+export default Camera;

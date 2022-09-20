@@ -1,9 +1,12 @@
 import React from "react";
 
-export const Balance = () => {
+
+const Balance = () => {
   return (
     <div>
       これはBalance
     </div>
   );
 }
+
+export default Balance;

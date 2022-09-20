@@ -1,9 +1,12 @@
 import React from "react";
 
-export const Luggage = () => {
+
+const Luggage = () => {
   return (
     <div>
       これはLuggage
     </div>
   );
 }
+
+export default Luggage;
