@@ -1,13 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import "./index.css"
+
 
 const Balance = () => {
   return (
-    <div>
+    <div className="balance">
       これはBalance
       <br />
-      <Link to="/camera">Cameraへ</Link>
+      <Link to="/camera" className="link">Cameraへ</Link>
     </div>
   );
 }

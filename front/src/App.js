@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
 import './App.css';
-import Home from "./pages/home";
-import Luggage from './pages/luggage';
-import Balance from './pages/balance';
-import Camera from "./pages/camera";
-import Result from './pages/result';
+import Home from "./pages/Home";
+import Luggage from './pages/Luggage';
+import Balance from './pages/Balance';
+import Camera from "./pages/Camera";
+import Result from './pages/Result';
 
 
 const App = () => {
@@ -14,6 +14,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <div>
+        <div className="header">
+          <p>これはヘッダー</p>
+        </div>
+
         <Routes>
           <Route index element={<Home />} />
           <Route path="luggage" element={<Luggage />} />
