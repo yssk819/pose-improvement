@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
+import axios from "axios";
 
 import "./index.css"
 
@@ -12,14 +13,25 @@ const videoConstraints = {
 };
 
 const Camera = () => {
+  const url = "http://127.0.0.1:8000";
+  const [message, setMessage] = useState("判定待ち");
   const webcamRef = useRef({});
-  const [url, setUrl] = useState();
-  const capture = useCallback(() => {
-    const imageSrc = webcamRef.current?.getScreenshot();
+  const [image, setImage] = useState();
+  
+  const judge = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
-      setUrl(imageSrc);
+      setImage(imageSrc);
     }
-  }, [webcamRef]);
+
+    const params = {
+      "data": imageSrc,
+    };
+
+    axios.post(url, params).then((res) => {
+      setMessage(res.data.res);
+    })
+  }
 
   return (
     <div>
@@ -38,7 +50,15 @@ const Camera = () => {
       </div>
 
       <div>
-        <button onClick={capture}>撮影</button>
+        <button onClick={judge}>判定</button>
+      </div>
+
+      <div>
+        判定結果 : {message}
+      </div>
+
+      <div>
+        <img src={image} />
       </div>
 
       <Link to="/result">Resultへ</Link>
