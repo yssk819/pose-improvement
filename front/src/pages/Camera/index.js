@@ -20,16 +20,14 @@ const Camera = () => {
   
   const judge = () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    if (imageSrc) {
-      setImage(imageSrc);
-    }
 
     const params = {
       "data": imageSrc,
     };
 
     axios.post(url, params).then((res) => {
-      setMessage(res.data.res);
+      setMessage(res.data.message);
+      setImage(res.data.image);
     })
   }
 
@@ -58,7 +56,7 @@ const Camera = () => {
       </div>
 
       <div>
-        <img src={image} />
+        <img src={`data:image/png;base64,${image}`} />
       </div>
 
       <Link to="/result">Resultへ</Link>
