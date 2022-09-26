@@ -1,6 +1,8 @@
+import io
 import cv2
 import numpy as np
 import base64
+from PIL import Image
 from tkinter.tix import IMAGE
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -27,28 +29,22 @@ class WebcamBase64(BaseModel):
     data: str
 
 # Webcamのデータを画像に変換
-def decode_webcam(webcam_base64):
-    # いらない文字列を削除
-    target = "data:image/jpeg;base64,"
-    idx = webcam_base64.find(target)
-    webcam_base64 = webcam_base64[idx+len(target):]
-
+def decode_base64(base64_data):
+    # 不要な文字列を削除
+    target = "data:image/png;base64,"
+    idx = base64_data.data.find(target)
+    base64_data.data = base64_data.data[idx+len(target):]
+    
     # 変換
-    webcam_binary = base64.b64decode(webcam_base64)
-    webcam_png = np.frombuffer(webcam_binary, dtype=np.uint8)
-    webcam_img = cv2.imdecode(webcam_png, cv2.IMREAD_COLOR)
+    bin_data = base64.b64decode(base64_data.data)
+    np_data = np.frombuffer(bin_data, dtype=np.uint8)
+    img = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
 
-    return webcam_img
-
-def create_response():
-    pass
+    return img
 
 
 @app.post("/")
 async def judge(webcam_base64: WebcamBase64):
-    # webcam_img = decode_webcam(webcam_base64)
-    # if webcam_img:
-    #     print("画像を受け取りました")
-    #     print(webcam_img.shape)
+    webcam_img = decode_base64(webcam_base64)
 
     return {"res": "悪い姿勢です"}
