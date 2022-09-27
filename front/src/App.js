@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
-function App() {
+import './App.css';
+import Home from "./pages/Home";
+import Luggage from './pages/Luggage';
+import Balance from './pages/Balance';
+import Camera from "./pages/Camera";
+import Result from './pages/Result';
+
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div>
+        <div className="header">
+          <p>これはヘッダー</p>
+        </div>
+
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="luggage" element={<Luggage />} />
+          <Route path="balance" element={<Balance />} />
+          <Route path="camera" element={<Camera />} />
+          <Route path="result" element={<Result />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
