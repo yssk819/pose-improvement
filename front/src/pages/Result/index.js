@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 const Result = () => {
   return (
     <div>
-      これはResult
+      <p>おしまい</p>
+      
       <br />
       <Link to="/">Homeへ</Link>
     </div>

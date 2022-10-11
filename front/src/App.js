@@ -15,7 +15,7 @@ const App = () => {
     <BrowserRouter>
       <div>
         <div className="header">
-          <p>これはヘッダー</p>
+          <p>立ち姿勢判定アプリ</p>
         </div>
 
         <Routes>

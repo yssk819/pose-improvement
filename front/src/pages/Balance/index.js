@@ -7,9 +7,10 @@ import "./index.css"
 const Balance = () => {
   return (
     <div className="balance">
-      これはBalance
+      <p>足圧センサで重心位置を測定</p>
+
       <br />
-      <Link to="/camera" className="link">Cameraへ</Link>
+      <Link to="/camera" className="link">次へ</Link>
     </div>
   );
 }

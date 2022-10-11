@@ -33,7 +33,8 @@ const Camera = () => {
 
   return (
     <div>
-      これはCamera
+      <p>カメラで撮影して姿勢を判定</p>
+
       <br />
 
       <div>
@@ -59,7 +60,7 @@ const Camera = () => {
         <img src={`data:image/png;base64,${image}`} />
       </div>
 
-      <Link to="/result">Resultへ</Link>
+      <Link to="/result">終了</Link>
     </div>
   );
 }
