@@ -1,32 +1,31 @@
-import React from "react";
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
-
+import React, {useState} from "react";
 import './App.css';
-import Home from "./pages/Home";
-import Luggage from './pages/Luggage';
-import Balance from './pages/Balance';
-import Camera from "./pages/Camera";
-import Result from './pages/Result';
-
+// import components
+import Camera from "./components/Camera";
+import Result from "./components/Result";
 
 const App = () => {
+  const [isGotResult, setIsGotResult] = useState(false);
+  const [image, setImage] = useState();
+  const [message, setMessage] = useState("判定待ち");
+
+  const reset = () => {
+    setIsGotResult(false);
+    setImage(null);
+    setMessage("判定待ち");
+  };
 
   return (
-    <BrowserRouter>
-      <div>
-        <div className="header">
-          <p>立ち姿勢判定アプリ</p>
-        </div>
-
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="luggage" element={<Luggage />} />
-          <Route path="balance" element={<Balance />} />
-          <Route path="camera" element={<Camera />} />
-          <Route path="result" element={<Result />} />
-        </Routes>
+    <div>
+      <div className="header">
+        <h1>姿勢改善アプリ</h1>
       </div>
-    </BrowserRouter>
+
+      {!isGotResult ? 
+        <Camera setImage={setImage} setMessage={setMessage} setIsGotResult={setIsGotResult} /> :
+        <Result image={image} message={message} reset={reset} />
+      }
+    </div>
   );
 };
 

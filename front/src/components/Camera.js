@@ -1,10 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import Webcam from "react-webcam";
 import axios from "axios";
-
-import "./index.css"
-
 
 const videoConstraints = {
   width: 720,
@@ -12,11 +8,9 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-const Camera = () => {
+const Camera = (props) => {
   const url = "http://127.0.0.1:8000";
-  const [message, setMessage] = useState("判定待ち");
   const webcamRef = useRef({});
-  const [image, setImage] = useState();
   
   const judge = () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -26,16 +20,15 @@ const Camera = () => {
     };
 
     axios.post(url, params).then((res) => {
-      setMessage(res.data.message);
-      setImage(res.data.image);
+      props.setMessage(res.data.message);
+      props.setImage(res.data.image);
+      props.setIsGotResult(true);
     })
   }
 
   return (
     <div>
-      <p>カメラで撮影して姿勢を判定</p>
-
-      <br />
+      <h2>Camera</h2>
 
       <div>
         <Webcam
@@ -51,16 +44,6 @@ const Camera = () => {
       <div>
         <button onClick={judge}>判定</button>
       </div>
-
-      <div>
-        判定結果 : {message}
-      </div>
-
-      <div>
-        <img src={`data:image/png;base64,${image}`} />
-      </div>
-
-      <Link to="/result">終了</Link>
     </div>
   );
 }
