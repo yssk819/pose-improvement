@@ -14,10 +14,10 @@ const Result = (props) => {
       </div>
 
       <div>
-      <button onClick={props.reset}>Reset</button>
+        <button onClick={props.reset}>Reset</button>
       </div>
     </div>
   );
-}
+};
 
 export default Result;
