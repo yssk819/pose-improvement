@@ -2,14 +2,38 @@
   text-align: center;
 }
 
-.header {
-  background: lavender;
-  margin-top: -16px;
-  padding-top: 26px;
-  padding-bottom: 10px;
+.App-header {
+  background: steelblue;
+  padding: 2px;
+  display: flex;
+  align-items: center;
 }
 
-.App-header {
+.App-header-icon {
+  height: 40px;
+  width: 40px;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.App-header-name {
+  color: white;
+  font-size: 30px;
+}
+
+.App-main {
+  background: white;
+  margin: 30px;
+  margin-top: 0px;
+  padding: 5px;
+  padding-bottom: 50px;
+}
+
+.Home-headline-p {
+  font-size: 40px;
+}
+
+/* .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -18,17 +42,4 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+} */
