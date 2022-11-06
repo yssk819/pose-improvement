@@ -34,8 +34,8 @@ const Camera = (props) => {
       <div>
         <Webcam
           audio={false}
-          width={180}
-          height={360}
+          width={240}
+          height={480}
           ref={webcamRef}
           screenshotFormat="image/png"
           videoConstraints={videoConstraints}

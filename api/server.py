@@ -67,6 +67,25 @@ def findPoint(humans, p, w, h):
         except:
             pass
 
+def checkPoint(humans, w, h):
+    ok = True
+    message = "判定可能です"
+    if len(humans) > 1:
+        ok = False
+        message = "一人だけ写してください"
+        return ok, message
+    if len(humans) < 1:
+        ok = False
+        message = "人を検出できません"
+        return ok, message
+    
+    for p in range(18):
+        if findPoint(humans, p, w, h) == None:
+            ok = False
+            message = "全身を写してください"
+            return ok, message
+    return ok, message
+
 
 @app.post("/")
 async def judge(webcam_base64: WebcamBase64):
@@ -85,4 +104,14 @@ async def judge(webcam_base64: WebcamBase64):
     res_img = TfPoseEstimator.draw_humans(webcam_img, humans, imgcopy=False)
     res_base64 = img_to_base64(res_img)
 
-    return {"message": "悪い姿勢です", "image": res_base64}
+    # 判定可能か確認
+    ok, message = checkPoint(humans, w, h)
+
+    # 判定できる場合は判定
+    if ok:
+        # 判定
+        print("hana", findPoint(humans, 0, w, h))
+        print("migime", findPoint(humans, 14, w, h))
+        print("hidarime", findPoint(humans, 15, w, h))
+
+    return {"ok": ok, "message": message, "image": res_base64}
