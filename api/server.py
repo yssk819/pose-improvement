@@ -25,6 +25,7 @@ app.add_middleware(
 # frontから受け取る形式
 class WebcamBase64(BaseModel):
     data: str
+    isFront: bool
 
 # base64を画像に変換
 def base64_to_img(base64_data):
@@ -113,5 +114,8 @@ async def judge(webcam_base64: WebcamBase64):
         print("hana", findPoint(humans, 0, w, h))
         print("migime", findPoint(humans, 14, w, h))
         print("hidarime", findPoint(humans, 15, w, h))
+    
+    print(type(webcam_base64.isFront))  # 後で消す
+    print(webcam_base64.isFront)
 
     return {"ok": ok, "message": message, "image": res_base64}

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 
@@ -17,19 +17,28 @@ const Camera = (props) => {
 
     const params = {
       "data": imageSrc,
+      "isFront": props.isFront,
     };
 
     axios.post(url, params).then((res) => {
       props.setMessage(res.data.message);
       props.setImage(res.data.image);
-      props.navigate("/result");
+      if (props.isFront) {
+        props.navigate("/camera2");
+      }
+      else {
+        props.navigate("/result");
+      }
     });
   };
 
   return (
     <div>
-      <h2>Camera</h2>
-      <p>カメラの正面に立って撮影してください。</p>
+      <h2>カメラで撮影</h2>
+
+      {props.isFront
+        ? <p>体の正面を撮影してください。</p>
+        : <p>体の側面を撮影してください。</p>}
 
       <div>
         <Webcam
@@ -43,7 +52,7 @@ const Camera = (props) => {
       </div>
 
       <div>
-        <button onClick={judge}>判定</button>
+        <button onClick={judge}>撮影</button>
       </div>
     </div>
   );

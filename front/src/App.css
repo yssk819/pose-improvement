@@ -33,6 +33,30 @@
   font-size: 40px;
 }
 
+.Home-instruction-ul {
+  text-align: left;
+  padding-left: 100px;
+}
+
+.Result-container {
+  padding: 50px;
+}
+
+.Result-content {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.Result-content-image {
+  height: 400px;
+  width: 200px;
+}
+
+.Result-content-comment {
+  padding: 60px;
+}
+
 /* .App-header {
   background-color: #282c34;
   min-height: 100vh;
