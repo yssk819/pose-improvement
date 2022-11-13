@@ -1,8 +1,12 @@
-FROM idock.daumkakao.io/kakaobrain/deepcloud-sshd:openpose-preprocess
+FROM python:3.8
 
-COPY ./*.py /root/tf-openpose/
-WORKDIR /root/tf-openpose/
+WORKDIR /root/app/
 
-RUN cd /root/tf-openpose/ && pip3 install -r requirements.txt
+COPY requirements.txt .
 
-ENTRYPOINT ["python3", "pose_dataworker.py"]
+RUN apt update && apt upgrade -y && \
+    apt install -y libgl1-mesa-dev && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+EXPOSE 8000
