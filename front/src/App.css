@@ -6,6 +6,7 @@
   background: steelblue;
   padding: 2px;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -30,12 +31,48 @@
 }
 
 .Home-headline-p {
-  font-size: 40px;
+  font-size: 20px;
+  margin: 40px 0px;
 }
 
-.Home-instruction-ul {
+.Home-instruction-headline {
+  margin-top: 50px;
+  margin-bottom: -20px;
+}
+
+.Home-instruction-headline-h2 {
+  font-size: 30px;
+  margin: 0px;
+}
+
+.Home-instruction-content {
+  display: flex;
+  justify-content: center;
+}
+
+.Home-instruction-content-ul {
   text-align: left;
-  padding-left: 100px;
+  list-style: none;
+  font-size: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.Home-button {
+  color: white;
+  font-size: 20px;
+  background: steelblue;
+  border: none;
+  height: 50px;
+  padding: 0px 32px;
+  margin-top: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.Home-image {
+  width: 80%;
+  margin-top: 50px;
 }
 
 .Result-container {

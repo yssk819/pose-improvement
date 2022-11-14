@@ -26,7 +26,7 @@ const App = () => {
     <div className="App">
       <div className="App-header">
         <Icon className="App-header-icon" />
-        <h1 className="App-header-name">姿勢改善アプリ</h1>
+        <h1 className="App-header-name">カメラで立ち姿勢を改善！</h1>
       </div>
 
       <div className="App-main">
