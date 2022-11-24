@@ -55,18 +55,13 @@ def checkHumans(humans, w, h):
 
 def judge_lean(human, w, h):
     """
-    体が左右に傾いているか判定
-    """
-    pass
-
-
-def judge_kosi(human, w, h):
-    """
-    腰が左右のどちらかに傾いているかどうかを判定
+    上体が左右のどちらかに傾いているかどうかを判定
     体の中心のx座標と、腰のx座標との距離を左右それぞれ計算
     左右の距離の比率が閾値を越えたら悪い姿勢と判定
     """
+    # 首の付け根あたりの座標
     center = findPoint(human, 1, w, h)
+    # 腰の座標
     kosi_right = findPoint(human, 8, w, h)
     kosi_left = findPoint(human, 11, w, h)
 
@@ -76,11 +71,41 @@ def judge_kosi(human, w, h):
 
     threshold = 1.2  # いい感じに調整
     if (diff_ratio >= threshold):
+        comment = "上体が傾いています。"
+    else:
+        comment = "上体はまっすぐです。"
+    
+    print(comment)  # test
+    return comment
+
+
+def judge_kosi(human, w, h):
+    """
+    腰が左右のどちらかに出ているかを判定
+    両足首の中心のx座標と、腰のx座標との距離を左右それぞれ計算
+    左右の距離の比率が閾値を越えたら悪い姿勢と判定
+    """
+    # 足首の座標
+    ankle_right = findPoint(human, 10, w, h)
+    ankle_left = findPoint(human, 13, w, h)
+    # 腰の座標
+    kosi_right = findPoint(human, 8, w, h)
+    kosi_left = findPoint(human, 11, w, h)
+
+    # 足首の中間の座標
+    center = int((ankle_right[0] + ankle_left[0]) / 2)
+
+    diff_left = abs(kosi_left[0] - center)
+    diff_right = abs(kosi_right[0] - center)
+    diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
+
+    threshold = 1.2  # いい感じに調整
+    if (diff_ratio >= threshold):
         comment = "腰が左右に出ています。両足に体重を乗せてみよう！"
     else:
-        comment = "腰は正常です。"
-    
-    print(comment)
+        comment = "あなたの腰は正常です。"
+
+    print(comment)  # test
     return comment
 
 
@@ -88,6 +113,7 @@ def judge(human, w, h, isFront):
     if isFront:
         # 正面の場合
         comments = []
+        comments.append({"comment": judge_lean(human, w, h)})
         comments.append({"comment": judge_kosi(human, w, h)})
         comments.append({"comment": "首が曲がっています"})
     else:
@@ -102,7 +128,6 @@ def main():
     isFront = True
     image_path = "../images/MicrosoftTeams-image (31).png"
     image = common.read_imgfile(image_path, None, None)
-    image_original = image.copy()
 
     # ===== モデルの読み込み =====
     h, w = image.shape[0], image.shape[1]
