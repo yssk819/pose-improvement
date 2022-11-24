@@ -53,9 +53,35 @@ def checkHumans(humans, w, h):
     return ok, messages
 
 
+def judge_head(human, w, h):
+    """
+    頭が傾いているかどうかを判定
+    体の中心のx座標と、耳のx座標との距離を左右それぞれ計算
+    左右の距離の比率が閾値を超えたら悪い姿勢と判定
+    """
+    # 首の付け根あたりの座標
+    center = findPoint(human, 1, w, h)
+    # 耳の座標
+    mimi_right = findPoint(human, 16, w, h)
+    mimi_left = findPoint(human, 17, w, h)
+
+    diff_left = abs(mimi_left[0] - center[0])
+    diff_right = abs(mimi_right[0] - center[0])
+    diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
+
+    threshold = 1.2  # いい感じに調整
+    if (diff_ratio >= threshold):
+        comment = "頭が傾いています。"
+    else:
+        comment = "頭はまっすぐです。"
+
+    print(comment)  # test
+    return comment
+
+
 def judge_lean(human, w, h):
     """
-    上体が左右のどちらかに傾いているかどうかを判定
+    上体が傾いているかどうかを判定
     体の中心のx座標と、腰のx座標との距離を左右それぞれ計算
     左右の距離の比率が閾値を越えたら悪い姿勢と判定
     """
@@ -69,7 +95,7 @@ def judge_lean(human, w, h):
     diff_right = abs(kosi_right[0] - center[0])
     diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
 
-    threshold = 1.2  # いい感じに調整
+    threshold = 1.25  # いい感じに調整
     if (diff_ratio >= threshold):
         comment = "上体が傾いています。"
     else:
@@ -113,6 +139,7 @@ def judge(human, w, h, isFront):
     if isFront:
         # 正面の場合
         comments = []
+        comments.append({"comment": judge_head(human, w, h)})
         comments.append({"comment": judge_lean(human, w, h)})
         comments.append({"comment": judge_kosi(human, w, h)})
         comments.append({"comment": "首が曲がっています"})
@@ -127,6 +154,7 @@ def main():
     # ===== 設定 =====
     isFront = True
     image_path = "../images/MicrosoftTeams-image (31).png"
+    # image_path = "../images/kosi.png"
     image = common.read_imgfile(image_path, None, None)
 
     # ===== モデルの読み込み =====
