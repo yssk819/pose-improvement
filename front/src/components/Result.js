@@ -6,25 +6,25 @@ import exampleSide from "./example_side.png";
 const Result = (props) => {
   return (
     <div>
-      <h2>判定結果</h2>
+      <h1 className="Result-h1">判定結果</h1>
 
       <div className="Result-container">
         <div className="Result-image-container">
           <div>
             <div className="Result-image-res-container">
               <div className="Result-image-res-content">
-                <h3>正面</h3>
+                <h2 className="Result-image-h2">正面</h2>
                 <img className="Result-image-res" src={`data:image/png;base64,${props.frontImage}`} alt="front" />
               </div>
               
               <div className="Result-image-res-content">
-                <h3>側面</h3>
+                <h2 className="Result-image-h2">側面</h2>
                 <img className="Result-image-res" src={`data:image/png;base64,${props.sideImage}`} alt="side" />
               </div>
             </div>
 
             <div>
-              <h3>お手本</h3>
+              <h2 className="Result-image-h2">お手本</h2>
             </div>
 
             <div className="Result-image-example-container">
@@ -42,7 +42,8 @@ const Result = (props) => {
         <div className="Result-comment-container">
           <div>
             <div className="Result-comment-front">
-              <p>正面コメント</p>
+              <h2 className="Result-comment-h2">アドバイス</h2>
+              <h3 className="Result-comment-h3">正面</h3>
               <ul className="Result-comment-ul">
                 {props.frontMessages.map((message) => {
                   return (
@@ -52,7 +53,7 @@ const Result = (props) => {
               </ul>
             </div>
             <div className="Result-comment-side">
-              <p>側面コメント</p>
+              <h3 className="Result-comment-h3">側面</h3>
               <ul className="Result-comment-ul">
                 {props.sideMessages.map((message) => {
                   return (
