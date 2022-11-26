@@ -36,18 +36,18 @@ def checkHumans(humans, w, h):
     if len(humans) > 1:
         # 複数人写っているとき
         ok = False
-        messages.append({"message": "一人だけ写してください"})
+        messages.append("一人だけ写してください")
         return ok, messages
     if len(humans) < 1:
         # 人が検出されないとき
         ok = False
-        messages.append({"message": "人を検出できません"})
+        messages.append("人を検出できません")
         return ok, messages
     
     for p in range(18):
         if findPoint(humans[0], p, w, h) == None:
             ok = False
-            messages.append({"message": "全身を写してください"})
+            messages.append("全身を写してください")
             return ok, messages
     
     return ok, messages
@@ -71,12 +71,11 @@ def judge_head(human, w, h):
 
     threshold = 1.2  # いい感じに調整
     if (diff_ratio >= threshold):
-        comment = "頭が傾いています。"
+        message = "頭が傾いています。"
     else:
-        comment = "頭はまっすぐです。"
+        message = "頭はまっすぐです。"
 
-    print(comment)  # test
-    return comment
+    return message
 
 
 def judge_lean(human, w, h):
@@ -97,12 +96,11 @@ def judge_lean(human, w, h):
 
     threshold = 1.25  # いい感じに調整
     if (diff_ratio >= threshold):
-        comment = "上体が傾いています。"
+        message = "上体が傾いています。"
     else:
-        comment = "上体はまっすぐです。"
+        message = "上体はまっすぐです。"
     
-    print(comment)  # test
-    return comment
+    return message
 
 
 def judge_kosi(human, w, h):
@@ -127,27 +125,25 @@ def judge_kosi(human, w, h):
 
     threshold = 1.2  # いい感じに調整
     if (diff_ratio >= threshold):
-        comment = "腰が左右に出ています。両足に体重を乗せてみよう！"
+        message = "腰が左右に出ています。両足に体重を乗せてみよう！"
     else:
-        comment = "あなたの腰は正常です。"
+        message = "あなたの腰は正常です。"
 
-    print(comment)  # test
-    return comment
+    return message
 
 
 def judge(human, w, h, isFront):
     if isFront:
         # 正面の場合
-        comments = []
-        comments.append({"comment": judge_head(human, w, h)})
-        comments.append({"comment": judge_lean(human, w, h)})
-        comments.append({"comment": judge_kosi(human, w, h)})
-        comments.append({"comment": "首が曲がっています"})
+        messages = []
+        messages.append(judge_head(human, w, h))
+        messages.append(judge_lean(human, w, h))
+        messages.append(judge_kosi(human, w, h))
     else:
         # 側面の場合
-        comments = []
+        messages = []
     
-    return comments
+    return messages
 
 
 def main():
@@ -172,14 +168,13 @@ def main():
     # 判定可能か確認
     ok, messages = checkHumans(humans, w, h)
 
-    # メッセージを表示してみる (テスト)
-    for m in messages:
-        print(m)
 
     # 判定できる場合は判定
     if ok:
         # 判定
         messages = judge(humans[0], w, h, isFront)
+    
+    print(messages)
     
     # ===== 画像を表示 =====
     cv2.imwrite("../images/judge.png", image_res)

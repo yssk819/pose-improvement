@@ -76,22 +76,44 @@
 }
 
 .Result-container {
-  padding: 50px;
-}
-
-.Result-content {
-  margin-bottom: 30px;
+  /* padding: 50px; */
   display: flex;
   justify-content: center;
 }
 
-.Result-content-image {
-  height: 400px;
-  width: 200px;
+.Result-image-container {
+  display: flex;
+  justify-content: center;
 }
 
-.Result-content-comment {
-  padding: 60px;
+.Result-image {
+  height: 280px;
+  width: 140px;
+}
+
+.Result-image-example {
+  /* height: 280px; */
+  width: 140px;
+}
+
+.Result-comment-container {
+  /* padding: 60px; */
+}
+
+.Result-comment-ul {
+  text-align: left;
+}
+
+.Result-reset-button {
+  color: white;
+  font-size: 20px;
+  background: steelblue;
+  border: none;
+  height: 50px;
+  padding: 0px 32px;
+  margin-top: 30px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 /* .App-header {

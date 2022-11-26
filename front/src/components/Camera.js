@@ -21,7 +21,7 @@ const Camera = (props) => {
     };
 
     axios.post(url, params).then((res) => {
-      props.setMessage(res.data.message);
+      props.setMessages(res.data.messages);
       props.setImage(res.data.image);
       if (props.isFront) {
         props.navigate("/camera2");
@@ -34,11 +34,9 @@ const Camera = (props) => {
 
   return (
     <div>
-      <h2>カメラで撮影</h2>
-
       {props.isFront
-        ? <p>体の正面を撮影してください。</p>
-        : <p>体の側面を撮影してください。</p>}
+        ? <h2>体の正面を撮影</h2>
+        : <h2>体の側面を撮影</h2>}
 
       <div>
         <Webcam
