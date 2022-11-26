@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path
 
+
 app = FastAPI()
 
 origins = [
@@ -22,10 +23,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # frontから受け取る形式
 class WebcamBase64(BaseModel):
     data: str
     isFront: bool
+
 
 # base64を画像に変換
 def base64_to_img(base64_data):
@@ -41,6 +44,7 @@ def base64_to_img(base64_data):
 
     return img
 
+
 # 画像をbase64に変換
 def img_to_base64(img):
     _, img = bin_data = cv2.imencode(".png", img)
@@ -48,48 +52,148 @@ def img_to_base64(img):
 
     return base64_data
 
+
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
+
 # 関節の座標を取得 (p:関節の番号)
-def findPoint(humans, p, w, h):
-    for human in humans:
-        try:
-            body_part = human.body_parts[p]
-            parts = [0,0]
+def findPoint(human, p, w, h):
+    try:
+        body_part = human.body_parts[p]
+        parts = [0,0]
 
-            # 座標を整数に切り上げで置換
-            parts[0] = int(body_part.x * w + 0.5)
-            parts[1] = int(body_part.y * h + 0.5)
-            
-            # parts = [x座標, y座標]
-            return parts
+        # 座標を整数に切り上げで置換
+        parts[0] = int(body_part.x * w + 0.5)
+        parts[1] = int(body_part.y * h + 0.5)
         
-        except:
-            pass
+        # parts = [x座標, y座標]
+        return parts
+    
+    except:
+        pass
 
-def checkPoint(humans, w, h):
+
+# 判定可能か確認
+def checkHumans(humans, w, h):
     ok = True
-    message = "判定可能です"
+    messages = []
+
     if len(humans) > 1:
+        # 複数人写っているとき
         ok = False
-        message = "一人だけ写してください"
-        return ok, message
+        messages.append("一人だけ写してください")
+        return ok, messages
     if len(humans) < 1:
+        # 人が検出されないとき
         ok = False
-        message = "人を検出できません"
-        return ok, message
+        messages.append("人を検出できません")
+        return ok, messages
     
     for p in range(18):
-        if findPoint(humans, p, w, h) == None:
+        if findPoint(humans[0], p, w, h) == None:
             ok = False
-            message = "全身を写してください"
-            return ok, message
-    return ok, message
+            messages.append("全身を写してください")
+            return ok, messages
+    
+    return ok, messages
+
+
+def judge_head(human, w, h):
+    """
+    頭が傾いているかどうかを判定
+    体の中心のx座標と、耳のx座標との距離を左右それぞれ計算
+    左右の距離の比率が閾値を超えたら悪い姿勢と判定
+    """
+    # 首の付け根あたりの座標
+    center = findPoint(human, 1, w, h)
+    # 耳の座標
+    mimi_right = findPoint(human, 16, w, h)
+    mimi_left = findPoint(human, 17, w, h)
+
+    diff_left = abs(mimi_left[0] - center[0])
+    diff_right = abs(mimi_right[0] - center[0])
+    diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
+
+    threshold = 1.2  # いい感じに調整
+    if (diff_ratio >= threshold):
+        message = "頭が傾いています。"
+    else:
+        message = "頭はまっすぐです。"
+
+    return message
+
+
+def judge_lean(human, w, h):
+    """
+    上体が傾いているかどうかを判定
+    体の中心のx座標と、腰のx座標との距離を左右それぞれ計算
+    左右の距離の比率が閾値を越えたら悪い姿勢と判定
+    """
+    # 首の付け根あたりの座標
+    center = findPoint(human, 1, w, h)
+    # 腰の座標
+    kosi_right = findPoint(human, 8, w, h)
+    kosi_left = findPoint(human, 11, w, h)
+
+    diff_left = abs(kosi_left[0] - center[0])
+    diff_right = abs(kosi_right[0] - center[0])
+    diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
+
+    threshold = 1.25  # いい感じに調整
+    if (diff_ratio >= threshold):
+        message = "上体が傾いています。"
+    else:
+        message = "上体はまっすぐです。"
+    
+    return message
+
+
+def judge_kosi(human, w, h):
+    """
+    腰が左右のどちらかに出ているかを判定
+    両足首の中心のx座標と、腰のx座標との距離を左右それぞれ計算
+    左右の距離の比率が閾値を越えたら悪い姿勢と判定
+    """
+    # 足首の座標
+    ankle_right = findPoint(human, 10, w, h)
+    ankle_left = findPoint(human, 13, w, h)
+    # 腰の座標
+    kosi_right = findPoint(human, 8, w, h)
+    kosi_left = findPoint(human, 11, w, h)
+
+    # 足首の中間の座標
+    center = int((ankle_right[0] + ankle_left[0]) / 2)
+
+    diff_left = abs(kosi_left[0] - center)
+    diff_right = abs(kosi_right[0] - center)
+    diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
+
+    threshold = 1.2  # いい感じに調整
+    if (diff_ratio >= threshold):
+        message = "腰が左右に出ています。両足に体重を乗せてみよう！"
+    else:
+        message = "あなたの腰は正常です。"
+
+    return message
+
+
+def judge(human, w, h, isFront):
+    if isFront:
+        # 正面の場合
+        messages = []
+        messages.append(judge_head(human, w, h))
+        messages.append(judge_lean(human, w, h))
+        messages.append(judge_kosi(human, w, h))
+    else:
+        # 側面の場合
+        messages = []
+    
+    return messages
 
 
 @app.post("/")
-async def judge(webcam_base64: WebcamBase64):
+async def main(webcam_base64: WebcamBase64):
     webcam_img = base64_to_img(webcam_base64.data)
 
     # モデルの読み込み
@@ -106,16 +210,11 @@ async def judge(webcam_base64: WebcamBase64):
     res_base64 = img_to_base64(res_img)
 
     # 判定可能か確認
-    ok, message = checkPoint(humans, w, h)
+    ok, messages = checkHumans(humans, w, h)
 
     # 判定できる場合は判定
     if ok:
         # 判定
-        print("hana", findPoint(humans, 0, w, h))
-        print("migime", findPoint(humans, 14, w, h))
-        print("hidarime", findPoint(humans, 15, w, h))
-    
-    print(type(webcam_base64.isFront))  # 後で消す
-    print(webcam_base64.isFront)
+        messages = judge(humans[0], w, h, webcam_base64.isFront)
 
-    return {"ok": ok, "message": message, "image": res_base64}
+    return {"ok": ok, "messages": messages, "image": res_base64}

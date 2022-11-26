@@ -6,6 +6,7 @@
   background: steelblue;
   padding: 2px;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -30,40 +31,107 @@
 }
 
 .Home-headline-p {
-  font-size: 40px;
+  font-size: 20px;
+  margin: 40px 0px;
 }
 
-.Home-instruction-ul {
+.Home-instruction-headline {
+  margin-top: 50px;
+  margin-bottom: -20px;
+}
+
+.Home-instruction-headline-h2 {
+  font-size: 30px;
+  margin: 0px;
+}
+
+.Home-instruction-content {
+  display: flex;
+  justify-content: center;
+}
+
+.Home-instruction-content-ul {
   text-align: left;
-  padding-left: 100px;
+  list-style: none;
+  font-size: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.Home-button {
+  color: white;
+  font-size: 20px;
+  background: steelblue;
+  border: none;
+  height: 50px;
+  padding: 0px 32px;
+  margin-top: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.Home-image {
+  width: 80%;
+  margin-top: 50px;
 }
 
 .Result-container {
-  padding: 50px;
+  display: flex;
 }
 
-.Result-content {
-  margin-bottom: 30px;
+.Result-image-container {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Result-comment-container {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Result-image-res-container {
   display: flex;
   justify-content: center;
 }
 
-.Result-content-image {
-  height: 400px;
-  width: 200px;
-}
-
-.Result-content-comment {
-  padding: 60px;
-}
-
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Result-image-example-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.Result-image-res-content {
+  margin: 0px 10px;
+}
+
+.Result-image-example-content {
+  margin: 0px 10px;
+}
+
+.Result-image-res {
+  height: 280px;
+  width: 140px;
+}
+
+.Result-image-example {
+  width: 140px;
+}
+
+.Result-comment-ul {
+  text-align: left;
+}
+
+.Result-reset-button {
   color: white;
-} */
+  font-size: 20px;
+  background: steelblue;
+  border: none;
+  height: 50px;
+  padding: 0px 32px;
+  margin-top: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+}
