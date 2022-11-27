@@ -82,19 +82,19 @@ def checkHumans(humans, w, h):
     if len(humans) > 1:
         # 複数人写っているとき
         ok = False
-        messages.append("一人だけ写してください")
+        messages.append("一人だけ写してください。")
         return ok, messages
     if len(humans) < 1:
         # 人が検出されないとき
         ok = False
-        messages.append("人を検出できません")
+        messages.append("人を検出できません。")
         return ok, messages
     
-    for p in range(18):
-        if findPoint(humans[0], p, w, h) == None:
-            ok = False
-            messages.append("全身を写してください")
-            return ok, messages
+    # for p in range(18):
+    #     if findPoint(humans[0], p, w, h) == None:
+    #         ok = False
+    #         messages.append("全身を写してください")
+    #         return ok, messages
     
     return ok, messages
 
@@ -110,6 +110,9 @@ def judge_head(human, w, h):
     # 耳の座標
     mimi_right = findPoint(human, 16, w, h)
     mimi_left = findPoint(human, 17, w, h)
+
+    if center == None or mimi_right == None or mimi_left == None:
+        return
 
     diff_left = abs(mimi_left[0] - center[0])
     diff_right = abs(mimi_right[0] - center[0])
@@ -136,6 +139,9 @@ def judge_lean(human, w, h):
     kosi_right = findPoint(human, 8, w, h)
     kosi_left = findPoint(human, 11, w, h)
 
+    if center == None or kosi_right == None or kosi_left == None:
+        return
+
     diff_left = abs(kosi_left[0] - center[0])
     diff_right = abs(kosi_right[0] - center[0])
     diff_ratio = max(diff_right, diff_left) / min(diff_right, diff_left)
@@ -149,7 +155,7 @@ def judge_lean(human, w, h):
     return message
 
 
-def judge_kosi(human, w, h):
+def judge_kosi_front(human, w, h):
     """
     腰が左右のどちらかに出ているかを判定
     両足首の中心のx座標と、腰のx座標との距離を左右それぞれ計算
@@ -161,6 +167,9 @@ def judge_kosi(human, w, h):
     # 腰の座標
     kosi_right = findPoint(human, 8, w, h)
     kosi_left = findPoint(human, 11, w, h)
+
+    if ankle_right == None or ankle_left == None or kosi_right == None or kosi_left == None:
+        return
 
     # 足首の中間の座標
     center = int((ankle_right[0] + ankle_left[0]) / 2)
@@ -178,16 +187,114 @@ def judge_kosi(human, w, h):
     return message
 
 
+def judge_nekoze(human, w, h):
+    """
+    耳の位置が肩よりも前に出ているときに猫背と判定
+    """
+    # 耳の座標
+    mimi_right = findPoint(human, 16, w, h)
+    mimi_left = findPoint(human, 17, w, h)
+    # 肩の座標
+    kata_right = findPoint(human, 2, w, h)
+    kata_left = findPoint(human, 5, w, h)
+
+    threshold = 10  # いい感じに調整
+    if mimi_right is not None and kata_right is not None:
+        # 右側で判定
+        diff_x = abs(mimi_right[0] - kata_right[0])
+        diff_y = abs(mimi_right[1] - kata_right[1])
+
+        if diff_y / diff_x <= threshold:
+            message = "猫背になっています。背筋をまっすぐ伸ばしてみよう！"
+        else:
+            message = "背筋がまっすぐ伸びています。"
+        
+        return message
+
+    elif mimi_left is not None and kata_left is not None:
+        # 左側で判定
+        diff_x = abs(mimi_left[0] - kata_left[0])
+        diff_y = abs(mimi_left[1] - kata_left[1])
+        
+        if diff_y / diff_x <= threshold:
+            message = "猫背になっています。背筋をまっすぐ伸ばしてみよう！"
+        else:
+            message = "背筋がまっすぐ伸びています。"
+        
+        return message
+
+    else:
+        return
+
+
+def judge_kosi_side(human, w, h):
+    """
+    肩と腰がまっすぐになっていないとき腰が出ていると判定
+    """
+    # 肩の座標
+    kata_right = findPoint(human, 2, w, h)
+    kata_left = findPoint(human, 5, w, h)
+    # 腰の座標
+    kosi_right = findPoint(human, 8, w, h)
+    kosi_left = findPoint(human, 11, w, h)
+
+    threshold = 10  # いい感じに調整
+    if kata_right is not None and kosi_right is not None:
+        # 右側で判定
+        diff_x = abs(kata_right[0] - kosi_right[0])
+        diff_y = abs(kata_right[1] - kosi_right[1])
+
+        if diff_y / diff_x <= threshold:
+            message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
+        else:
+            message = "腰がまっすぐです。"
+
+        return message
+    
+    elif kata_left is not None and kosi_left is not None:
+        # 左側で判定
+        diff_x = abs(kata_left[0] - kosi_left[0])
+        diff_y = abs(kata_left[1] - kosi_left[1])
+
+        if diff_y / diff_x <= threshold:
+            message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
+        else:
+            message = "腰がまっすぐです。"
+
+        return message
+
+    else:
+        return
+
+
 def judge(human, w, h, isFront):
     if isFront:
         # 正面の場合
         messages = []
-        messages.append(judge_head(human, w, h))
-        messages.append(judge_lean(human, w, h))
-        messages.append(judge_kosi(human, w, h))
+        
+        res_head = judge_head(human, w, h)
+        if res_head is not None:
+            messages.append(res_head)
+        
+        res_lean = judge_lean(human, w, h)
+        if res_lean is not None:
+            messages.append(res_lean)
+
+        res_kosi_front = judge_kosi_front(human, w, h)
+        if res_kosi_front is not None:
+            messages.append(res_kosi_front)
+
     else:
         # 側面の場合
         messages = []
+
+        res_nekoze = judge_nekoze(human, w, h)
+        if res_nekoze is not None:
+            messages.append(res_nekoze)
+
+        res_kosi_side = judge_kosi_side(human, w, h)
+        if res_kosi_side is not None:
+            messages.append(res_kosi_side)
     
     return messages
 
@@ -213,8 +320,11 @@ async def main(webcam_base64: WebcamBase64):
     ok, messages = checkHumans(humans, w, h)
 
     # 判定できる場合は判定
-    if ok:
+    if len(humans):
         # 判定
         messages = judge(humans[0], w, h, webcam_base64.isFront)
+    
+    if len(messages) == 0:
+        messages.append("判定に失敗しました。全身が写るように撮影してください。")
 
     return {"ok": ok, "messages": messages, "image": res_base64}

@@ -7,7 +7,15 @@
   padding: 2px;
   display: flex;
   justify-content: center;
+}
+
+.App-header-click-container {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .App-header-icon {
@@ -75,8 +83,13 @@
   margin-top: 50px;
 }
 
+.Result-h1 {
+  font-size: 30px;
+}
+
 .Result-container {
   display: flex;
+  margin-bottom: 20px;
 }
 
 .Result-image-container {
@@ -84,6 +97,8 @@
   flex-grow: 1;
   display: flex;
   justify-content: flex-end;
+  margin-right: 40px;
+  margin-left: 20px;
 }
 
 .Result-comment-container {
@@ -91,6 +106,12 @@
   flex-grow: 1;
   display: flex;
   justify-content: flex-start;
+  margin-right: 40px;
+}
+
+.Result-image-h2 {
+  font-size: 26px;
+  margin-bottom: 5px;
 }
 
 .Result-image-res-container {
@@ -112,16 +133,32 @@
 }
 
 .Result-image-res {
-  height: 280px;
-  width: 140px;
+  width: 150px;
 }
 
 .Result-image-example {
-  width: 140px;
+  width: 150px;
+}
+
+.Result-comment-h2 {
+  font-size: 26px;
+}
+
+.Result-comment-h3 {
+  font-size: 22px;
+  margin-bottom: 0px;
 }
 
 .Result-comment-ul {
   text-align: left;
+  list-style: url(./components/chat.svg);
+  margin: 0px;
+}
+
+.Result-comment-li {
+  position: relative;
+  font-size: 20px;
+  margin: 10px 0px;
 }
 
 .Result-reset-button {
@@ -131,7 +168,7 @@
   border: none;
   height: 50px;
   padding: 0px 32px;
-  margin-top: 30px;
+  margin-top: 40px;
   border-radius: 8px;
   cursor: pointer;
 }

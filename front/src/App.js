@@ -25,8 +25,10 @@ const App = () => {
   return (
     <div className="App">
       <div className="App-header">
-        <Icon className="App-header-icon" />
-        <h1 className="App-header-name">カメラで立ち姿勢を改善！</h1>
+        <div className="App-header-click-container" onClick={() => navigate("/")}>
+          <Icon className="App-header-icon" />
+          <h1 className="App-header-name">カメラで立ち姿勢を改善！</h1>
+        </div>
       </div>
 
       <div className="App-main">
