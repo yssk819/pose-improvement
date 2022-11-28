@@ -2,6 +2,9 @@ import React, { useRef } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 
+import exampleFront from "./example_front.png";
+import exampleSide from "./example_side.png";
+
 const videoConstraints = {
   width: 360,
   height: 720,
@@ -37,20 +40,37 @@ const Camera = (props) => {
       {props.isFront
         ? <h2>体の正面を撮影</h2>
         : <h2>体の側面を撮影</h2>}
+      <p>※マスクは外してください。</p>
 
-      <div>
-        <Webcam
-          audio={false}
-          width={240}
-          height={480}
-          ref={webcamRef}
-          screenshotFormat="image/png"
-          videoConstraints={videoConstraints}
-        />
-      </div>
+      <div className="Camera-container">
+        <div className="Camera-example-container">
+          <div className="Camera-example-content">
+            {/* <h3>お手本</h3> */}
+            {props.isFront
+              ? <img className="Camera-example" src={exampleFront} alt="example front" />
+              : <img className="Camera-example" src={exampleSide} alt="example side" />
+            }
+          </div>
+        </div>
 
-      <div>
-        <button onClick={judge}>撮影</button>
+        <div className="Camera-webcam-container">
+          <div className="Camera-webcam-content">
+            <Webcam
+              audio={false}
+              width={240}
+              height={480}
+              ref={webcamRef}
+              screenshotFormat="image/png"
+              videoConstraints={videoConstraints}
+            />
+          </div>
+        </div>
+
+        <div className="Camera-button-container">
+          <div className="Camera-button-content">
+            <button className="Camera-button" onClick={judge}>撮影</button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -82,12 +82,12 @@ def checkHumans(humans, w, h):
     if len(humans) > 1:
         # 複数人写っているとき
         ok = False
-        messages.append("一人だけ写してください。")
+        messages.append("複数の人が写っています。一人だけ写してください。")
         return ok, messages
     if len(humans) < 1:
         # 人が検出されないとき
         ok = False
-        messages.append("人を検出できません。")
+        messages.append("人を検出できませんでした。")
         return ok, messages
     
     # for p in range(18):
@@ -204,10 +204,12 @@ def judge_nekoze(human, w, h):
         diff_x = abs(mimi_right[0] - kata_right[0])
         diff_y = abs(mimi_right[1] - kata_right[1])
 
-        if diff_y / diff_x <= threshold:
-            message = "猫背になっています。背筋をまっすぐ伸ばしてみよう！"
+        if diff_x == 0:
+            message = "頭がまっすぐです。"
+        elif diff_y / diff_x <= threshold:
+            message = "頭が傾いています。顎を引いてみよう！"
         else:
-            message = "背筋がまっすぐ伸びています。"
+            message = "頭がまっすぐです。"
         
         return message
 
@@ -216,10 +218,12 @@ def judge_nekoze(human, w, h):
         diff_x = abs(mimi_left[0] - kata_left[0])
         diff_y = abs(mimi_left[1] - kata_left[1])
         
-        if diff_y / diff_x <= threshold:
-            message = "猫背になっています。背筋をまっすぐ伸ばしてみよう！"
+        if diff_x == 0:
+            message = "頭がまっすぐです。"
+        elif diff_y / diff_x <= threshold:
+            message = "頭が傾いています。顎を引いてみよう！"
         else:
-            message = "背筋がまっすぐ伸びています。"
+            message = "頭がまっすぐです。"
         
         return message
 
@@ -227,9 +231,9 @@ def judge_nekoze(human, w, h):
         return
 
 
-def judge_kosi_side(human, w, h):
+def judge_lean_side(human, w, h):
     """
-    肩と腰がまっすぐになっていないとき腰が出ていると判定
+    肩と腰がまっすぐになっていないとき上体が傾いていると判定
     """
     # 肩の座標
     kata_right = findPoint(human, 2, w, h)
@@ -244,10 +248,12 @@ def judge_kosi_side(human, w, h):
         diff_x = abs(kata_right[0] - kosi_right[0])
         diff_y = abs(kata_right[1] - kosi_right[1])
 
-        if diff_y / diff_x <= threshold:
-            message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
+        if diff_x == 0:
+            message = "上体がまっすぐです。"
+        elif diff_y / diff_x <= threshold:
+            message = "上体が傾いています。体をまっすぐにしてみよう！"
         else:
-            message = "腰がまっすぐです。"
+            message = "上体がまっすぐです。"
 
         return message
     
@@ -256,7 +262,53 @@ def judge_kosi_side(human, w, h):
         diff_x = abs(kata_left[0] - kosi_left[0])
         diff_y = abs(kata_left[1] - kosi_left[1])
 
-        if diff_y / diff_x <= threshold:
+        if diff_x == 0:
+            message = "上体がまっすぐです。"
+        elif diff_y / diff_x <= threshold:
+            message = "上体が傾いています。体をまっすぐにしてみよう！"
+        else:
+            message = "上体がまっすぐです。"
+
+        return message
+
+    else:
+        return
+
+
+def judge_kosi_side(human, w, h):
+    """
+    肩と腰がまっすぐになっていないとき腰が出ていると判定
+    """
+    # 腰の座標
+    kosi_right = findPoint(human, 8, w, h)
+    kosi_left = findPoint(human, 11, w, h)
+    # 足首の座標
+    asi_right = findPoint(human, 10, w, h)
+    asi_left = findPoint(human, 13, w, h)
+
+    threshold = 10  # いい感じに調整
+    if kosi_right is not None and asi_right is not None:
+        # 右側で判定
+        diff_x = abs(kosi_right[0] - asi_right[0])
+        diff_y = abs(kosi_right[1] - asi_right[1])
+
+        if diff_x == 0:
+            message = "腰がまっすぐです。"
+        elif diff_y / diff_x <= threshold:
+            message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
+        else:
+            message = "腰がまっすぐです。"
+
+        return message
+    
+    elif kosi_left is not None and asi_left is not None:
+        # 左側で判定
+        diff_x = abs(kosi_left[0] - asi_left[0])
+        diff_y = abs(kosi_left[1] - asi_left[1])
+
+        if diff_x == 0:
+            message = "腰がまっすぐです。"
+        elif diff_y / diff_x <= threshold:
             message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
         else:
             message = "腰がまっすぐです。"
@@ -291,6 +343,10 @@ def judge(human, w, h, isFront):
         res_nekoze = judge_nekoze(human, w, h)
         if res_nekoze is not None:
             messages.append(res_nekoze)
+        
+        res_lean_side = judge_lean_side(human, w, h)
+        if res_lean_side is not None:
+            messages.append(res_lean_side)
 
         res_kosi_side = judge_kosi_side(human, w, h)
         if res_kosi_side is not None:
