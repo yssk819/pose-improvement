@@ -83,6 +83,36 @@
   margin-top: 50px;
 }
 
+.Camera-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Camera-webcam-container {
+  margin: 0px 20px;
+}
+
+.Camera-button-container {
+  width: 240px;
+  display: flex;
+}
+
+.Camera-example {
+  height: 480px;
+}
+
+.Camera-button {
+  color: white;
+  font-size: 20px;
+  background: steelblue;
+  border: none;
+  height: 50px;
+  padding: 0px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .Result-h1 {
   font-size: 30px;
 }
