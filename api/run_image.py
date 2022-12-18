@@ -149,7 +149,7 @@ def judge(human, w, h, isFront):
 def main():
     # ===== 設定 =====
     isFront = True
-    image_path = "../images/MicrosoftTeams-image (31).png"
+    image_path = "../images/example_front.png"
     # image_path = "../images/kosi.png"
     image = common.read_imgfile(image_path, None, None)
 
