@@ -46,6 +46,7 @@ const Camera = (props) => {
         ? <h2>体の正面を撮影</h2>
         : <h2>体の側面を撮影</h2>}
       <p>※マスクは外してください。</p>
+      <p>ボタンを押して5秒後に撮影します。</p>
 
       <div className="Camera-container">
         <div className="Camera-example-container">
