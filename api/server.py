@@ -120,9 +120,9 @@ def judge_head(human, w, h):
 
     threshold = 1.2  # いい感じに調整
     if (diff_ratio >= threshold):
-        message = "頭が傾いています。"
+        message = "× 頭が傾いています。"
     else:
-        message = "頭はまっすぐです。"
+        message = "○ 頭はまっすぐです。"
 
     return message
 
@@ -148,9 +148,9 @@ def judge_lean(human, w, h):
 
     threshold = 1.25  # いい感じに調整
     if (diff_ratio >= threshold):
-        message = "上体が傾いています。"
+        message = "× 上体が傾いています。"
     else:
-        message = "上体はまっすぐです。"
+        message = "○ 上体はまっすぐです。"
     
     return message
 
@@ -180,9 +180,9 @@ def judge_kosi_front(human, w, h):
 
     threshold = 1.2  # いい感じに調整
     if (diff_ratio >= threshold):
-        message = "腰が左右に出ています。両足に体重を乗せてみよう！"
+        message = "× 腰が左右に出ています。両足に体重を乗せてみよう！"
     else:
-        message = "あなたの腰は正常です。"
+        message = "○ あなたの腰は正常です。"
 
     return message
 
@@ -205,11 +205,11 @@ def judge_nekoze(human, w, h):
         diff_y = abs(mimi_right[1] - kata_right[1])
 
         if diff_x == 0:
-            message = "頭がまっすぐです。"
+            message = "○ 頭がまっすぐです。"
         elif diff_y / diff_x <= threshold:
-            message = "頭が傾いています。顎を引いてみよう！"
+            message = "× 頭が傾いています。顎を引いてみよう！"
         else:
-            message = "頭がまっすぐです。"
+            message = "○ 頭がまっすぐです。"
         
         return message
 
@@ -219,11 +219,11 @@ def judge_nekoze(human, w, h):
         diff_y = abs(mimi_left[1] - kata_left[1])
         
         if diff_x == 0:
-            message = "頭がまっすぐです。"
+            message = "○ 頭がまっすぐです。"
         elif diff_y / diff_x <= threshold:
-            message = "頭が傾いています。顎を引いてみよう！"
+            message = "× 頭が傾いています。顎を引いてみよう！"
         else:
-            message = "頭がまっすぐです。"
+            message = "○ 頭がまっすぐです。"
         
         return message
 
@@ -249,11 +249,11 @@ def judge_lean_side(human, w, h):
         diff_y = abs(kata_right[1] - kosi_right[1])
 
         if diff_x == 0:
-            message = "上体がまっすぐです。"
+            message = "○ 上体がまっすぐです。"
         elif diff_y / diff_x <= threshold:
-            message = "上体が傾いています。体をまっすぐにしてみよう！"
+            message = "× 上体が傾いています。体をまっすぐにしてみよう！"
         else:
-            message = "上体がまっすぐです。"
+            message = "○ 上体がまっすぐです。"
 
         return message
     
@@ -263,11 +263,11 @@ def judge_lean_side(human, w, h):
         diff_y = abs(kata_left[1] - kosi_left[1])
 
         if diff_x == 0:
-            message = "上体がまっすぐです。"
+            message = "○ 上体がまっすぐです。"
         elif diff_y / diff_x <= threshold:
-            message = "上体が傾いています。体をまっすぐにしてみよう！"
+            message = "× 上体が傾いています。体をまっすぐにしてみよう！"
         else:
-            message = "上体がまっすぐです。"
+            message = "○ 上体がまっすぐです。"
 
         return message
 
@@ -293,11 +293,11 @@ def judge_kosi_side(human, w, h):
         diff_y = abs(kosi_right[1] - asi_right[1])
 
         if diff_x == 0:
-            message = "腰がまっすぐです。"
+            message = "○ 腰がまっすぐです。"
         elif diff_y / diff_x <= threshold:
-            message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
+            message = "× 腰が前後に出ています。腰をまっすぐにしてみよう！"
         else:
-            message = "腰がまっすぐです。"
+            message = "○ 腰がまっすぐです。"
 
         return message
     
@@ -307,11 +307,11 @@ def judge_kosi_side(human, w, h):
         diff_y = abs(kosi_left[1] - asi_left[1])
 
         if diff_x == 0:
-            message = "腰がまっすぐです。"
+            message = "○ 腰がまっすぐです。"
         elif diff_y / diff_x <= threshold:
-            message = "腰が前後に出ています。腰をまっすぐにしてみよう！"
+            message = "× 腰が前後に出ています。腰をまっすぐにしてみよう！"
         else:
-            message = "腰がまっすぐです。"
+            message = "○ 腰がまっすぐです。"
 
         return message
 
