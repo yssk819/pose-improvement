@@ -5,6 +5,8 @@ import axios from "axios";
 import exampleFront from "./example_front.png";
 import exampleSide from "./example_side.png";
 
+const sleep = waitTime => new Promise( resolve => setTimeout(resolve, waitTime) );
+
 const videoConstraints = {
   width: 360,
   height: 720,
@@ -14,7 +16,10 @@ const videoConstraints = {
 const Camera = (props) => {
   const webcamRef = useRef({});
   
-  const judge = () => {
+  const judge = async () => {
+    // sleep
+    await sleep(5000);
+
     const imageSrc = webcamRef.current.getScreenshot();
     const url = "http://127.0.0.1:8000";
 
@@ -41,6 +46,7 @@ const Camera = (props) => {
         ? <h2>体の正面を撮影</h2>
         : <h2>体の側面を撮影</h2>}
       <p>※マスクは外してください。</p>
+      <p>ボタンを押して5秒後に撮影します。</p>
 
       <div className="Camera-container">
         <div className="Camera-example-container">
